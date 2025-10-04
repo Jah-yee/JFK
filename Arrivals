@@ -1,0 +1,27 @@
+import requests
+from bs4 import BeautifulSoup
+
+def scrape_jfk_arrivals(url):
+    response = requests.get(url)
+    response.raise_for_status()  # Raise an error for bad responses
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    arrivals = []
+    # Example: Update the selector below to match the arrivals table/rows in JFK website
+    for row in soup.select('table.arrivals-table tbody tr'):
+        flight = {}
+        flight['flight'] = row.select_one('td.flight').get_text(strip=True)
+        flight['airline'] = row.select_one('td.airline').get_text(strip=True)
+        flight['origin'] = row.select_one('td.origin').get_text(strip=True)
+        flight['sched.'] = row.select_one('td.sched.').get_text(strip=True)
+        flight['status'] = row.select_one('td.status').get_text(strip=True)
+        arrivals.append(flight)
+
+    return arrivals
+
+if __name__ == "__main__":
+    JFK_ARRIVALS_URL = "https://www.jfkairport.com/flight-tracker?view=VIEW_ARRIVAL&apt=JFK"  # Update if necessary
+    arrivals = scrape_jfk_arrivals(JFK_ARRIVALS_URL)
+    for flight in arrivals:
+        print(flight)
