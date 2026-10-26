@@ -14,7 +14,7 @@ def scrape_jfk_arrivals(url):
         flight['flight'] = row.select_one('td.flight').get_text(strip=True)
         flight['airline'] = row.select_one('td.airline').get_text(strip=True)
         flight['origin'] = row.select_one('td.origin').get_text(strip=True)
-        flight['sched.'] = row.select_one('td.sched.').get_text(strip=True)
+        flight['sched'] = row.select_one('td.sched').get_text(strip=True)
         flight['status'] = row.select_one('td.status').get_text(strip=True)
         arrivals.append(flight)
 
